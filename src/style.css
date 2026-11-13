@@ -1,0 +1,473 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap');
+
+:root {
+  --cyan: #72e7ff;
+  --blue: #2088ff;
+  --gold: #ffe4a1;
+  --white: #f6fbff;
+  --muted: #a8c5d7;
+  --panel: rgba(7, 17, 31, 0.9);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: #030912;
+  color: var(--white);
+  font-family: 'Cairo', system-ui, sans-serif;
+}
+
+button {
+  font: inherit;
+}
+
+#stage {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    radial-gradient(
+      ellipse at 50% 35%,
+      #193c55 0%,
+      #081522 48%,
+      #02060c 100%
+    );
+}
+
+#scene {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  outline: none;
+  touch-action: manipulation;
+}
+
+.vignette {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse at 50% 45%,
+      transparent 28%,
+      rgba(2, 6, 10, 0.52) 100%
+    ),
+    linear-gradient(
+      0deg,
+      #02060a 0%,
+      transparent 35%,
+      rgba(2, 6, 10, 0.38) 100%
+    );
+}
+
+.topbar {
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding:
+    max(20px, env(safe-area-inset-top))
+    clamp(18px, 5vw, 64px)
+    18px;
+  pointer-events: none;
+}
+
+.brand {
+  direction: ltr;
+  color: #fff;
+  font: 700 22px 'Rajdhani', sans-serif;
+  letter-spacing: 1.5px;
+  text-shadow: 0 0 18px rgba(114, 231, 255, 0.3);
+}
+
+.brand span,
+.loadlogo span {
+  color: var(--cyan);
+}
+
+.brand small {
+  display: block;
+  margin-top: -4px;
+  color: #a7c3d4;
+  font: 600 9px 'Cairo', sans-serif;
+  letter-spacing: 2px;
+  text-align: left;
+}
+
+.badge {
+  padding: 8px 13px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  background: rgba(7, 21, 34, 0.68);
+  backdrop-filter: blur(14px);
+  color: #d5efff;
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.content {
+  position: absolute;
+  z-index: 4;
+  inset: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: clamp(100px, 16vh, 150px) 18px 25px;
+  text-align: center;
+  pointer-events: none;
+}
+
+.intro {
+  max-width: 760px;
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
+}
+
+.eyebrow {
+  color: var(--cyan);
+  font: 700 11px 'Rajdhani', sans-serif;
+  letter-spacing: 4px;
+  text-shadow: 0 0 20px rgba(114, 231, 255, 0.35);
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 14px 0 10px;
+  font-size: clamp(34px, 7.5vw, 76px);
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: -1.5px;
+  text-shadow: 0 5px 40px rgba(0, 0, 0, 0.6);
+}
+
+h1 em {
+  color: var(--gold);
+  font-style: normal;
+}
+
+.sub {
+  max-width: 520px;
+  margin: 0 auto;
+  color: #c0d3e0;
+  font-size: clamp(12px, 2vw, 16px);
+  line-height: 1.9;
+}
+
+#prompt {
+  position: absolute;
+  z-index: 6;
+  bottom: max(28px, env(safe-area-inset-bottom));
+  left: 50%;
+  width: min(92vw, 430px);
+  transform: translateX(-50%);
+  text-align: center;
+  pointer-events: none;
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
+}
+
+.prompt-title {
+  color: #fff;
+  font-size: clamp(14px, 3.2vw, 19px);
+  font-weight: 800;
+  text-shadow: 0 3px 20px #000;
+}
+
+.prompt-sub {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.tap-ring {
+  display: grid;
+  width: 45px;
+  height: 45px;
+  margin: 12px auto 0;
+  place-items: center;
+  border: 1px solid rgba(114, 231, 255, 0.6);
+  border-radius: 50%;
+  box-shadow:
+    0 0 24px rgba(32, 136, 255, 0.25),
+    inset 0 0 16px rgba(32, 136, 255, 0.12);
+  animation: pulse 2.2s ease-in-out infinite;
+}
+
+.tap-ring span {
+  color: var(--cyan);
+  font-size: 19px;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 16px rgba(32, 136, 255, 0.2);
+  }
+
+  50% {
+    transform: scale(1.06);
+    box-shadow: 0 0 30px rgba(32, 136, 255, 0.55);
+  }
+}
+
+#loader {
+  position: absolute;
+  z-index: 10;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: #030912;
+  transition:
+    opacity 0.6s ease,
+    visibility 0.6s ease;
+}
+
+.loadbox {
+  padding: 25px;
+  text-align: center;
+}
+
+.loadlogo {
+  color: #fff;
+  font: 700 36px 'Rajdhani', sans-serif;
+  letter-spacing: 4px;
+}
+
+.spinner {
+  width: 180px;
+  height: 2px;
+  margin: 22px auto 14px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.spinner::after {
+  display: block;
+  width: 45%;
+  height: 100%;
+  background: var(--cyan);
+  content: '';
+  animation: loading 1.3s ease-in-out infinite;
+}
+
+@keyframes loading {
+  from {
+    transform: translateX(-220%);
+  }
+
+  to {
+    transform: translateX(450%);
+  }
+}
+
+#loadtext {
+  color: #9ab3c4;
+  font-size: 11px;
+}
+
+#message {
+  position: absolute;
+  z-index: 8;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(2, 7, 17, 0.88);
+  backdrop-filter: blur(14px);
+  text-align: center;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.8s ease,
+    visibility 0.8s ease;
+}
+
+#message.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.message-card {
+  width: 100%;
+  max-width: 620px;
+  padding: clamp(25px, 6vw, 52px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 28px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(19, 40, 59, 0.94),
+      rgba(7, 16, 27, 0.96)
+    );
+  box-shadow: 0 30px 100px rgba(0, 0, 0, 0.5);
+  animation: cardEnter 0.8s ease both;
+}
+
+@keyframes cardEnter {
+  from {
+    opacity: 0;
+    transform: translateY(22px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.cup-icon {
+  font-size: 50px;
+  filter: drop-shadow(0 0 24px rgba(255, 228, 161, 0.35));
+}
+
+#message h2 {
+  margin: 12px 0;
+  color: var(--gold);
+  font-size: clamp(30px, 7vw, 62px);
+  line-height: 1.2;
+}
+
+#message p {
+  color: #c3d5e1;
+  font-size: clamp(13px, 2.5vw, 16px);
+  line-height: 2;
+}
+
+#message .edit-note {
+  margin-top: 25px;
+  color: #8ba7b8;
+  font-size: 10px;
+}
+
+#restart {
+  margin-top: 15px;
+  padding: 12px 22px;
+  border: 1px solid rgba(114, 231, 255, 0.4);
+  border-radius: 999px;
+  background: rgba(114, 231, 255, 0.08);
+  color: #dffaff;
+  cursor: pointer;
+  font: 700 12px 'Cairo', sans-serif;
+  transition:
+    background 0.25s ease,
+    transform 0.25s ease;
+  pointer-events: auto;
+}
+
+#restart:hover {
+  transform: translateY(-2px);
+  background: rgba(114, 231, 255, 0.17);
+}
+
+#error {
+  position: absolute;
+  z-index: 9;
+  top: 50%;
+  right: 15px;
+  left: 15px;
+  display: none;
+  padding: 22px;
+  transform: translateY(-50%);
+  border: 1px solid rgba(255, 133, 133, 0.3);
+  border-radius: 16px;
+  background: rgba(23, 12, 17, 0.96);
+  color: #ffe7eb;
+  font-size: 13px;
+  line-height: 1.9;
+  text-align: center;
+}
+
+#error code {
+  display: block;
+  direction: ltr;
+  overflow-wrap: anywhere;
+  color: #ffc1ca;
+  font-size: 11px;
+}
+
+@media (max-width: 600px) {
+  .topbar {
+    padding:
+      max(17px, env(safe-area-inset-top))
+      16px
+      12px;
+  }
+
+  .brand {
+    font-size: 19px;
+  }
+
+  .brand small {
+    font-size: 7px;
+    letter-spacing: 1.4px;
+  }
+
+  .badge {
+    max-width: 145px;
+    padding: 7px 9px;
+    font-size: 8px;
+    letter-spacing: 0.4px;
+    text-align: center;
+  }
+
+  .content {
+    padding-top: 18vh;
+  }
+
+  .vignette {
+    background:
+      radial-gradient(
+        ellipse at 50% 45%,
+        transparent 18%,
+        rgba(2, 6, 10, 0.65) 100%
+      ),
+      linear-gradient(
+        0deg,
+        #02060a 0%,
+        transparent 42%,
+        rgba(2, 6, 10, 0.4) 100%
+      );
+  }
+
+  .message-card {
+    max-height: 86svh;
+    overflow-y: auto;
+  }
+}
+
+.intro {
+  position: fixed;
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: 90vw;
+  text-align: center;
+  z-index: 10;
+}
+
+.intro h1 {
+  font-size: clamp(22px, 3.5vw, 38px);
+  margin: 0;
+  text-align: center;
+}
